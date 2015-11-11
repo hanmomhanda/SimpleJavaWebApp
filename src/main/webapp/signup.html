@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Register form</title>
+<link rel="stylesheet" href="/simple-login/static/css/style.css">
+</head>
+
+<body>
+
+<div class="login-wrap">
+  <h2>Sign Up</h2>
+
+  <div class="form">
+    <form name="login-form" id="login-form">
+      <input type="text" placeholder="User Id" id="user-id" name="userId" />
+      <input type="password" placeholder="Password" name="password" />
+      <input type="password" placeholder="Re-Password" name="pw2" />
+      <button id="sign-up"> Sign Up </button>
+    </form>
+  <div>
+    <h3 id="msg-area"></h3>
+  </div>
+  </div>
+</div>
+<script src='/simple-login/static/js/jquery-1.11.3.min.js'></script>
+<script src="/simple-login/static/js/index.js"></script>
+<script>
+$(document).ready(function() {
+  $('#user-id').focus();
+  $('#sign-up').on('click', function(event) {
+    var form = document.getElementById('login-form'),
+            formData = $(form).serialize();
+    event.preventDefault();
+    $.ajax({
+      type: 'POST',
+      url: '/simple-login/signUp',
+      data: formData,
+      success: function(data) {
+        var result = JSON.parse(data);
+        switch(result.type) {
+          case 'success':
+            $('#login-form').hide();
+            $('#msg-area').html(result.msg);
+          break;
+          case 'fail':
+            $('#msg-area').html(result.msg);
+          break;
+        }
+      },
+      error: function(data, status, e) {
+        $('#msg-area').html(status);
+      }
+    })
+  });
+});
+</script>
+</body>
+</html>

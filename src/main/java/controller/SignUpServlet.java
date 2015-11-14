@@ -37,7 +37,7 @@ public class SignUpServlet extends HttpServlet {
         }
 
         ObjectMapper objectMapper = (ObjectMapper)req.getServletContext().getAttribute("objectMapper");
-
+        resp.setContentType("application/json");
         resp.getWriter().println(objectMapper.writeValueAsString(result));
     }
 }
